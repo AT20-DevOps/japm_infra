@@ -1,8 +1,3 @@
-$script = <<-SCRIPT
-echo "I like Vagrant"
-echo "I love Linux"
-touch file3
-SCRIPT
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -19,19 +14,13 @@ Vagrant.configure("2") do |config|
   end
   #configure provisioners on machines
   config.vm.provision :docker 
-  config.vm.provision :docker_compose
   
-  #Server 1
+  #Server ci-server
   config.vm.define "ci-server" do |ciserver|
     ciserver.vm.network "private_network", ip: '192.168.56.60'
     ciserver.vm.hostname = "ciserver"
-  end
-  #Server 2
-  config.vm.define "server-2" do |server2|
-    server2.vm.network "private_network", ip: '192.168.56.61'
-    server2.vm.hostname = "server2"
-    server2.vm.provision :file, source: "AT20_CONVERT_SERVICE", destination: "/home/vagrant/AT20_CONVERT_SERVICE"
-    server2.vm.provision :shell, inline: "docker compose -f /home/vagrant/AT20_CONVERT_SERVICE/docker-compose.yaml up -d"
+    ciserver.vm.provision :file, source: "../docker/docker-compose.ci.yml", destination: "docker-compose.yml"
+    ciserver.vm.provision :docker_compose, yml:"/home/vagrant/docker-compose.yml", run: "always"
   end
 
 end
