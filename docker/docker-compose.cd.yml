@@ -19,8 +19,8 @@ services:
       - gocd_server
     environment:
       - GO_SERVER_URL=http://gocd_server:8153/go
-      - AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
-      - AGENT_AUTO_REGISTER_RESOURCES=ubuntu
+      #- AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
+      - AGENT_AUTO_REGISTER_RESOURCES=ubuntu, node
       - AGENT_AUTO_REGISTER_HOSTNAME=gocd_agent_ubuntu
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -33,7 +33,7 @@ services:
       - gocd_server
     environment:
       - GO_SERVER_URL=http://gocd_server:8153/go
-      - AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
+      #- AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
       - AGENT_AUTO_REGISTER_RESOURCES=docker
       - AGENT_AUTO_REGISTER_HOSTNAME=gocd_agent_docker
     volumes:
@@ -47,7 +47,7 @@ services:
       - gocd_server
     environment:
       - GO_SERVER_URL=http://gocd_server:8153/go
-      - AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
+      #- AGENT_AUTO_REGISTER_KEY=28c20b90-0ed1-42c1-8910-9253299a6306
       - AGENT_AUTO_REGISTER_RESOURCES=python
       - AGENT_AUTO_REGISTER_HOSTNAME=gocd_agent_python
     volumes:
