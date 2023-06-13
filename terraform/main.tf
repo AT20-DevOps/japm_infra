@@ -15,15 +15,30 @@ resource "virtualbox_vm" "node" {
     user_data = ""
 
     network_adapter {
-    type           = "hostonly"
-    host_interface = "VirtualBox Host-Only Ethernet Adapter"
+        type           = "bridged"
+        host_interface = "Realtek PCIe GbE Family Controller"
+    }
+
+    connection {
+        type = "ssh"
+        host = element(virtualbox_vm.node.*.network_adapter.0.ipv4_address, 1)
+        user = "vagrant"
+        private_key = file("vagrant")
+    }
+
+    provisioner "file" {
+        source = "../scripts/install_docker.sh"
+        destination = "/tmp/install_docker.sh"
+    }
+
+    provisioner "remote-exec" {
+        inline = [ 
+            "chmod +x /tmp/install_docker.sh",
+            "/tmp/install_docker.sh" 
+        ]
     }
 }
 
 output "IPAddr" {
     value = element(virtualbox_vm.node.*.network_adapter.0.ipv4_address, 1)
-}
-
-output "IPAddr_2" {
-    value = element(virtualbox_vm.node.*.network_adapter.0.ipv4_address, 2)
 }
